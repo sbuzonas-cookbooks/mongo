@@ -24,3 +24,10 @@ suites:
       inspec_tests:
         - test/smoke/default
     attributes:
+  - name: repository
+    run_list:
+      - recipe[mongo::repository]
+    verifier:
+      inspec_tests:
+        - test/smoke/repository
+    attributes:
