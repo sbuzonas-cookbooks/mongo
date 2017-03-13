@@ -26,3 +26,7 @@ end
 group :docker do
   gem 'kitchen-docker', '~> 2.6.0'
 end
+
+group :publish do
+  gem 'stove', '~> 4.1.1'
+end

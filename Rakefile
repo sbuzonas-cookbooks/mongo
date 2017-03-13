@@ -2,6 +2,7 @@
 require 'bundler/setup'
 require 'rspec/core/rake_task'
 require 'rubocop/rake_task'
+require 'stove/rake_task'
 require 'foodcritic'
 require 'kitchen'
 
@@ -31,6 +32,8 @@ def kitchen_test(config_file)
     end
   end
 end
+
+Stove::RakeTask.new
 
 namespace :style do
   desc 'Run Ruby style checks'
