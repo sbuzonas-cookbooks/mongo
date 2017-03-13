@@ -39,5 +39,6 @@ when 'debian'
   end
   include_recipe 'apt'
 else
-  Chef::Log.warn("Installing the mongodb repository is not yet supported for the #{node['platform_family']} platform family.")
+  Chef::Log.warn 'Installing the mongodb repository is not yet supported for ' \
+                 "the #{node['platform_family']} platform family."
 end

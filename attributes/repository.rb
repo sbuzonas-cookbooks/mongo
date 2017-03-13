@@ -18,27 +18,34 @@
 
 pkg_major = node['mongo']['version'].to_f
 
+repository = default['mongo']['repository']
+
+repository['mirror'] = 'https://repo.mongodb.org'
+
 case node['platform_family']
 when 'rhel', 'fedora'
   if 'amazon' == node['platform']
-    default['mongo']['repository']['url'] = "https://repo.mongodb.org/yum/amazon/2013.03/mongodb-org/#{pkg_major}/x86_64/"
+    repository['url'] = 'https://repo.mongodb.org/yum' \
+                        "/amazon/2013.03/mongodb-org/#{pkg_major}/x86_64/"
   else
     arch = node['kernel']['machine'] =~ /x86_64/ ? 'x86_64' : 'i686'
-    default['mongo']['repository']['url'] = "https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/#{pkg_major}/#{arch}"
+    repository['url'] = 'https://repo.mongodb.org/yum' \
+                        "/redhat/$releasever/mongodb-org/#{pkg_major}/#{arch}"
   end
 when 'debian'
-  default['mongo']['repository']['url'] = "https://repo.mongodb.org/apt/#{node['platform']}"
-  default['mongo']['repository']['apt']['distribution'] = "#{node['lsb']['codename']}/mongodb-org/#{pkg_major}"
+  repository['url'] = "https://repo.mongodb.org/apt/#{node['platform']}"
   case node['platform']
   when 'ubuntu'
-    default['mongo']['repository']['apt']['components'] = ['multiverse']
-    default['mongo']['repository']['apt']['keyserver']  = 'hkp://keyserver.ubuntu.com:80'
+    repository['apt']['components'] = ['multiverse']
+    repository['apt']['keyserver']  = 'hkp://keyserver.ubuntu.com:80'
   when 'debian'
-    default['mongo']['repository']['apt']['components'] = ['main']
-    default['mongo']['repository']['apt']['keyserver']  = 'keyserver.ubuntu.com'
+    repository['apt']['components'] = ['main']
+    repository['apt']['keyserver']  = 'keyserver.ubuntu.com'
   end
+  repository['apt']['distribution'] = "#{node['lsb']['codename']}/mongodb-org" \
+                                      "/#{pkg_major}"
 end
 
-default['mongo']['repository']['yum']['gpgcheck']  = false
-default['mongo']['repository']['yum']['sslverify'] = false
-default['mongo']['repository']['apt']['key'] = pkg_major >= 3.2 ? 'EA312927' : '7F0CEB10'
+repository['yum']['gpgcheck']  = false
+repository['yum']['sslverify'] = false
+repository['apt']['key'] = pkg_major >= 3.2 ? 'EA312927' : '7F0CEB10'
