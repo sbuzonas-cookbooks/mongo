@@ -5,6 +5,9 @@ rvm:
 sudo: required
 services: docker
 
+cache:
+  - bundler
+
 env:
   matrix:
     - KITCHEN_SUITE=repository-ubuntu-1604
