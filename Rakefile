@@ -24,7 +24,7 @@ def kitchen_test(config_file)
   instances = kitchen_instances(config_file)
 
   if ENV['KITCHEN_SUITE']
-    instances.get(suite).verify
+    instances.get(ENV['KITCHEN_SUITE']).verify
   else
     instances.each do |instance|
       instance.test(:always)
