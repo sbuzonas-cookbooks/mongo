@@ -16,3 +16,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+pkg_major = node['mongo']['version'].to_f
+
+case node['platform_family']
+when 'rhel', 'fedora'
+  yum_repository "mongodb-#{pkg_major}" do
+    description 'MongoDB Repository'
+    baseurl     node['mongo']['repository']['url']
+    gpgcheck    node['mongo']['repository']['yum']['gpgcheck']
+    sslverify   node['mongo']['repository']['yum']['sslverify']
+    enabled     true
+    action      :create
+  end
+when 'debian'
+  apt_repository "mongodb-#{pkg_major}" do
+    uri          node['mongo']['repository']['url']
+    distribution node['mongo']['repository']['apt']['distribution']
+    components   node['mongo']['repository']['apt']['components']
+    keyserver    node['mongo']['repository']['apt']['keyserver']
+    key          node['mongo']['repository']['apt']['key']
+    action :add
+  end
+  include_recipe 'apt'
+else
+  Chef::Log.warn("Installing the mongodb repository is not yet supported for the #{node['platform_family']} platform family.")
+end
