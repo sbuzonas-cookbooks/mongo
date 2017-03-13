@@ -1,0 +1,19 @@
+language: ruby
+rvm:
+  - 2.3.0
+
+sudo: required
+services: docker
+
+env:
+  matrix:
+    - KITCHEN_SUITE=repository-ubuntu-1604
+    - KITCHEN_SUITE=repository-centos-72
+
+before_install: curl -L https://www.getchef.com/chef/install.sh | sudo bash -s -- -P chefdk -v 1.2.22
+
+install: chef exec bundle install --jobs=3 --retry=3 --without='vagrant'
+
+before_script: sudo iptables -L DOCKER || sudo iptables -N DOCKER
+
+script: travis_retry chef exec bundle exec rake docker
