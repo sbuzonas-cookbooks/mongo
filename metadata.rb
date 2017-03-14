@@ -12,3 +12,11 @@ source_url 'https://github.com/sbuzonas-cookbooks/mongo' if respond_to?(:source_
 # rubocop:enable Metrics/LineLength
 
 depends 'apt', '~> 6.0.1'
+
+supports 'amazon'
+supports 'centos'
+supports 'debian'
+supports 'fedora'
+supports 'oracle'
+supports 'redhat'
+supports 'ubuntu'
